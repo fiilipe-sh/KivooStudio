@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kivoo.studio — Apps que resolvem problemas de verdade</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pitaya: #E0458F;
+    --pitaya-deep: #C4318A;
+    --purple: #7B1FA2;
+    --dark: #0D0D0D;
+    --dark2: #111118;
+    --dark3: #16161F;
+    --dark4: #1C1C27;
+    --white: #F5F4F0;
+    --gray: #888880;
+    --gray2: #555550;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(13,13,13,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(0px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-logo .dot { width: 8px; height: 8px; background: var(--pitaya); border-radius: 50%; display: inline-block; }
+  .nav-links {
+    display: flex;
+    gap: 48px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--gray);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--pitaya);
+    text-decoration: none;
+    text-transform: uppercase;
+    border: 1px solid rgba(224,69,143,0.4);
+    padding: 10px 24px;
+    border-radius: 40px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-cta:hover { background: var(--pitaya); color: white; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-glow {
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 900px; height: 900px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,69,143,0.14) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-bg-glow2 {
+    position: absolute;
+    bottom: -300px; left: -200px;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,31,162,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-watermark {
+    position: absolute;
+    right: -80px; bottom: -60px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: min(40vw, 600px);
+    color: rgba(245,244,240,0.025);
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(224,69,143,0.08);
+    border: 1px solid rgba(224,69,143,0.2);
+    border-radius: 40px;
+    padding: 8px 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--pitaya);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    width: fit-content;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-tag .ping {
+    width: 7px; height: 7px;
+    background: var(--pitaya);
+    border-radius: 50%;
+    animation: ping 1.5s ease-in-out infinite;
+  }
+
+  @keyframes ping {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.5); }
+  }
+
+  .hero-headline {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(56px, 8vw, 120px);
+    line-height: 0.98;
+    letter-spacing: -2px;
+    color: var(--white);
+    margin-bottom: 0;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero-headline .line2 {
+    display: block;
+    color: var(--pitaya);
+    position: relative;
+  }
+  .hero-headline .line3 {
+    display: block;
+    color: var(--white);
+  }
+
+  .hero-sub {
+    margin-top: 48px;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 520px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-top: 56px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--pitaya);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 18px 40px;
+    border-radius: 60px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 50px rgba(224,69,143,0.35);
+  }
+  .btn-primary .arrow { font-size: 18px; transition: transform 0.2s; }
+  .btn-primary:hover .arrow { transform: translateX(4px); }
+
+  .btn-ghost {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--gray);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--white); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 48px;
+    left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+  .scroll-line {
+    width: 48px; height: 1px;
+    background: var(--gray2);
+  }
+  .scroll-text {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gray2);
+    text-transform: uppercase;
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 20px 0;
+    background: var(--dark2);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 18s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--gray2);
+    text-transform: uppercase;
+    padding: 0 48px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+  .marquee-item span.sep {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--pitaya);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── SECTIONS ── */
+  section { padding: 120px 60px; }
+
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--pitaya);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-label::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--pitaya);
+    display: inline-block;
+  }
+
+  /* ── PROCESSO ── */
+  .processo { background: var(--dark2); }
+  .processo-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 80px;
+    max-width: 700px;
+  }
+  .processo-headline span { color: var(--pitaya); }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .step {
+    background: var(--dark3);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .step:hover { background: var(--dark4); }
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 72px;
+    font-weight: 800;
+    color: rgba(224,69,143,0.12);
+    line-height: 1;
+    margin-bottom: 32px;
+    transition: color 0.3s;
+  }
+  .step:hover .step-num { color: rgba(224,69,143,0.25); }
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .step-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+  .step-line {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--pitaya);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .step:hover .step-line { transform: scaleX(1); }
+
+  /* ── PROBLEMA / SOLUÇÃO ── */
+  .problema-section { background: var(--dark); }
+  .problema-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .prob-col {
+    padding: 64px 56px;
+    background: var(--dark3);
+    position: relative;
+  }
+  .prob-col.sol { background: var(--pitaya); }
+  .col-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 32px;
+  }
+  .sol .col-tag { color: rgba(255,255,255,0.6); }
+  .col-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 3vw, 52px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 28px;
+  }
+  .sol .col-headline { color: white; }
+  .col-text {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.8;
+  }
+  .sol .col-text { color: rgba(255,255,255,0.8); }
+  .prob-arrow {
+    position: absolute;
+    top: 50%;
+    right: -28px;
+    transform: translateY(-50%);
+    width: 56px; height: 56px;
+    background: var(--pitaya);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: white;
+    z-index: 2;
+  }
+
+  /* ── SERVIÇOS ── */
+  .servicos-section { background: var(--dark2); }
+  .servicos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .servico-card {
+    background: var(--dark3);
+    padding: 52px 44px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  .servico-card:hover { background: var(--dark4); }
+  .servico-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: rgba(224,69,143,0.1);
+    border: 1px solid rgba(224,69,143,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin-bottom: 36px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .servico-card:hover .servico-icon {
+    background: rgba(224,69,143,0.2);
+    border-color: rgba(224,69,143,0.4);
+  }
+  .servico-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .servico-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.75;
+  }
+  .servico-corner {
+    position: absolute;
+    bottom: 28px; right: 28px;
+    width: 32px; height: 32px;
+    border-right: 1.5px solid rgba(224,69,143,0.3);
+    border-bottom: 1.5px solid rgba(224,69,143,0.3);
+    border-radius: 0 0 4px 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .servico-card:hover .servico-corner { opacity: 1; }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--dark);
+    text-align: center;
+    padding: 160px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,69,143,0.15) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .cta-section .section-label { justify-content: center; }
+  .cta-section .section-label::before { display: none; }
+  .cta-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 7vw, 100px);
+    font-weight: 800;
+    line-height: 1.0;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-headline span { color: var(--pitaya); }
+  .cta-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--gray);
+    margin-bottom: 56px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark2);
+    padding: 48px 60px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .footer-logo .dot { width: 7px; height: 7px; background: var(--pitaya); border-radius: 50%; }
+  .footer-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--gray2);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--pitaya); }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--gray2);
+    letter-spacing: 1px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 24px 28px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 28px 60px; }
+    section { padding: 80px 28px; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .problema-grid { grid-template-columns: 1fr; }
+    .prob-arrow { display: none; }
+    .servicos-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 24px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .hero-scroll { display: none; }
+    .cta-actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a href="#" class="nav-logo">K<span class="dot"></span>ivoo<span style="color:var(--gray);font-weight:400;">.studio</span></a>
+  <ul class="nav-links">
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a href="#contato" class="nav-cta">Fala com a gente</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg-glow"></div>
+  <div class="hero-bg-glow2"></div>
+  <div class="hero-watermark">K</div>
+
+  <div class="hero-tag">
+    <span class="ping"></span>
+    Studio de desenvolvimento mobile
+  </div>
+
+  <h1 class="hero-headline">
+    Seu problema<br>
+    <span class="line2">merece um</span>
+    <span class="line3">app de verdade.</span>
+  </h1>
+
+  <p class="hero-sub">
+    Transformamos problemas reais de negócios em aplicativos mobile que funcionam. Do levantamento ao lançamento nas lojas.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#contato" class="btn-primary">
+      Começar agora <span class="arrow">→</span>
+    </a>
+    <a href="#processo" class="btn-ghost">
+      Ver como funciona ↓
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">App Mobile <span class="sep"></span> UI/UX Design <span class="sep"></span> iOS & Android <span class="sep"></span> Produto Digital <span class="sep"></span> Lançamento nas Lojas <span class="sep"></span> Kivoo Studio <span class="sep"></span></div>
+    <div class="marquee-item">App Mobile <span class="sep"></span> UI/UX Design <span class="sep"></span> iOS & Android <span class="sep"></span> Produto Digital <span class="sep"></span> Lançamento nas Lojas <span class="sep"></span> Kivoo Studio <span class="sep"></span></div>
+  </div>
+</div>
+
+<!-- Processo -->
+<section class="processo" id="processo">
+  <div class="section-label reveal">Como trabalhamos</div>
+  <h2 class="processo-headline reveal">Do problema<br>ao <span>produto</span>,<br>passo a passo.</h2>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">Entendemos o problema</div>
+      <div class="step-desc">Antes de escrever uma linha de código, entendemos fundo o problema do seu negócio e quem vai usar o app.</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step reveal" style="transition-delay:0.1s">
+      <div class="step-num">02</div>
+      <div class="step-title">Desenhamos a solução</div>
+      <div class="step-desc">Criamos o design de todas as telas, fluxo de uso e protótipo interativo — antes de qualquer desenvolvimento.</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step reveal" style="transition-delay:0.2s">
+      <div class="step-num">03</div>
+      <div class="step-title">Desenvolvemos o app</div>
+      <div class="step-desc">Construímos o aplicativo para iOS e Android com tecnologia moderna, escalável e de fácil manutenção.</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step reveal" style="transition-delay:0.3s">
+      <div class="step-num">04</div>
+      <div class="step-title">Publicamos nas lojas</div>
+      <div class="step-desc">Cuidamos do processo completo de publicação na App Store e Google Play. Entregamos o produto funcionando.</div>
+      <div class="step-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Problema / Solução -->
+<section class="problema-section">
+  <div class="section-label reveal">Por que nos contratar</div>
+  <div class="problema-grid reveal">
+    <div class="prob-col">
+      <div class="col-tag">Sem a Kivoo</div>
+      <div class="col-headline">Problemas que travam seu negócio.</div>
+      <div class="col-text">Processos manuais, planilhas que não escalam, WhatsApp como sistema de gestão, dados perdidos, cliente insatisfeito. Você sabe que precisa de um app, mas não sabe por onde começar.</div>
+      <div class="prob-arrow">→</div>
+    </div>
+    <div class="prob-col sol">
+      <div class="col-tag">Com a Kivoo</div>
+      <div class="col-headline">Um app que resolve de verdade.</div>
+      <div class="col-text">Produto digital feito sob medida para o seu problema. Design limpo, experiência que seus clientes vão amar, e uma solução que cresce junto com o seu negócio.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Serviços -->
+<section class="servicos-section" id="servicos">
+  <div class="section-label reveal">O que entregamos</div>
+  <div class="servicos-grid">
+    <div class="servico-card reveal">
+      <div class="servico-icon"><svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#E0458F"><path d="M280-40q-33 0-56.5-23.5T200-120v-720q0-33 23.5-56.5T280-920h400q33 0 56.5 23.5T760-840v124q18 7 29 22t11 34v80q0 19-11 34t-29 22v404q0 33-23.5 56.5T680-40H280Zm0-80h400v-720H280v720Zm0 0v-720 720Zm162-240 198-198-56-56-142 142-56-56-56 56 112 112Z"/></svg></div>
+      <div class="servico-title">App Mobile</div>
+      <div class="servico-desc">Aplicativos nativos e híbridos para iOS e Android. Performance, segurança e experiência de alto nível.</div>
+      <div class="servico-corner"></div>
+    </div>
+    <div class="servico-card reveal" style="transition-delay:0.1s">
+      <div class="servico-icon"><svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#E0458F"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 32.5-156t88-127Q256-817 330-848.5T488-880q80 0 151 27.5t124.5 76q53.5 48.5 85 115T880-518q0 115-70 176.5T640-280h-74q-9 0-12.5 5t-3.5 11q0 12 15 34.5t15 51.5q0 50-27.5 74T480-80Zm0-400Zm-177 23q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17Zm120-160q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17Zm200 0q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17Zm120 160q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17ZM480-160q9 0 14.5-5t5.5-13q0-14-15-33t-15-57q0-42 29-67t71-25h70q66 0 113-38.5T800-518q0-121-92.5-201.5T488-800q-136 0-232 93t-96 227q0 133 93.5 226.5T480-160Z"/></svg></div>
+      <div class="servico-title">UI/UX Design</div>
+      <div class="servico-desc">Interfaces pensadas para o usuário real. Fluxos intuitivos, identidade visual consistente e protótipos interativos.</div>
+      <div class="servico-corner"></div>
+    </div>
+    <div class="servico-card reveal" style="transition-delay:0.2s">
+      <div class="servico-icon"><svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#E0458F"><path d="m226-559 78 33q14-28 29-54t33-52l-56-11-84 84Zm142 83 114 113q42-16 90-49t90-75q70-70 109.5-155.5T806-800q-72-5-158 34.5T492-656q-42 42-75 90t-49 90Zm155-121.5q0-33.5 23-56.5t57-23q34 0 57 23t23 56.5q0 33.5-23 56.5t-57 23q-34 0-57-23t-23-56.5ZM565-220l84-84-11-56q-26 18-52 32.5T532-299l33 79Zm313-653q19 121-23.5 235.5T708-419l20 99q4 20-2 39t-20 33L538-80l-84-197-171-171-197-84 167-168q14-14 33.5-20t39.5-2l99 20q104-104 218-147t235-24ZM157-321q35-35 85.5-35.5T328-322q35 35 34.5 85.5T327-151q-25 25-83.5 43T82-76q14-103 32-161.5t43-83.5Zm57 56q-10 10-20 36.5T180-175q27-4 53.5-13.5T270-208q12-12 13-29t-11-29q-12-12-29-11.5T214-265Z"/></svg></div>
+      <div class="servico-title">Publicação nas Lojas</div>
+      <div class="servico-desc">Gerenciamos todo o processo de publicação na App Store e Google Play, da conta ao app disponível para download.</div>
+      <div class="servico-corner"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contato">
+  <div class="cta-glow"></div>
+  <div class="section-label reveal">Bora conversar?</div>
+  <h2 class="cta-headline reveal">
+    Tem um problema<br>que precisa de<br><span>um app?</span>
+  </h2>
+  <p class="cta-sub reveal">A gente transforma sua ideia em produto digital. Sem enrolação.</p>
+  <div class="cta-actions reveal">
+    <a href="https://instagram.com/kivoo.studio" target="_blank" class="btn-primary">
+      DM no Instagram <span class="arrow">→</span>
+    </a>
+    <a href="mailto:kivoo.studio@gmail.com" class="btn-ghost">ou manda um e-mail</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">K<span class="dot"></span>ivoo<span style="color:var(--gray2);font-weight:400;">.studio</span></div>
+  <ul class="footer-links">
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="https://instagram.com/kivoo.studio" target="_blank">Instagram</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Kivoo Studio</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
